@@ -11,7 +11,7 @@ jobs:
     - name: Checkout Source repo
       uses: actions/checkout@v2
       with:
-        repository: username/Source-repo # Zaktualizuj na odpowiedni adres repozytorium Source repo
+        repository: TTheVert0s/Source-repo # Zaktualizuj na odpowiedni adres repozytorium Source repo
 
     - name: Install Qemu, Buildx, and Docker login
       run: |
@@ -42,7 +42,7 @@ jobs:
     - name: Checkout Config repo
       uses: actions/checkout@v2
       with:
-        repository: username/Config-repo # Zaktualizuj na odpowiedni adres repozytorium Config repo
+        repository: TheVert0s/Config-repo # Zaktualizuj na odpowiedni adres repozytorium Config repo
         ref: main # Zakładam, że główna gałąź to "main", dostosuj do swojej gałęzi
 
     - name: Configure git
