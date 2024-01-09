@@ -1,0 +1,62 @@
+name: Continuous Deployment
+
+on:
+  workflow_dispatch: # Pozwala na uruchamianie ręczne workflow
+
+jobs:
+  dockerCI:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Source repo
+      uses: actions/checkout@v2
+      with:
+        repository: username/Source-repo # Zaktualizuj na odpowiedni adres repozytorium Source repo
+
+    - name: Set up Qemu and Buildx
+      run: |
+        docker run --privileged --rm tonistiigi/binfmt --install all
+        docker buildx create --use
+      shell: bash
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and push Docker multi-architecture image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        platforms: linux/amd64,linux/arm64
+        push: true
+        tags: username/moja-aplikacja:latest
+
+  kubernetesCI:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Config repo
+      uses: actions/checkout@v2
+      with:
+        repository: username/Config-repo # Zaktualizuj na odpowiedni adres repozytorium Config repo
+        ref: main # Zakładam, że główna gałąź to "main", dostosuj do swojej gałęzi
+
+    - name: Configure git
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        
+    - name: Modify Kubernetes manifests
+      run: |
+        sed -i "s/image: username\/moja-aplikacja:.*/image: username\/moja-aplikacja:latest/g" ./Config-repo/deployment.yaml
+        # Dodaj inne kroki modyfikacji manifestów w zależności od potrzeb
+
+    - name: Commit and push changes
+      run: |
+        cd ./Config-repo
+        git add .
+        git commit -m "Aktualizacja obrazu Docker w manifestach"
+        git push origin main # Zakładając, że używasz głównej gałęzi
+
