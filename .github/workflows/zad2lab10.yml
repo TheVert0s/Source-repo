@@ -50,7 +50,7 @@ jobs:
         
     - name: Modify Kubernetes manifests
       run: |
-        sed -i "s/image: user\/moja-aplikacja:.*/image: user\/moja-aplikacja:latest/g" ./Config-repo/deployment.yaml
+        sed -i "s/image: user\/moja-aplikacja:.*/image: user\/moja-aplikacja:latest/g" deployment.yaml
         # Dodaj inne kroki modyfikacji manifestów w zależności od potrzeb
 
     - name: Commit and push changes
