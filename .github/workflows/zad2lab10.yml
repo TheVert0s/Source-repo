@@ -31,7 +31,7 @@ jobs:
         context: .
         platforms: linux/amd64,linux/arm64
         push: true
-        tags: TheVert0s/moja-aplikacja:latest
+        tags: thebert0s/moja-aplikacja:latest
 
   kubernetesCI:
     runs-on: ubuntu-latest
