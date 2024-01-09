@@ -55,7 +55,7 @@ jobs:
 
     - name: Commit and push changes
       run: |
-        git config --global user.email "kacper.majcher@op.pl
+        git config --global user.email "kacper.majcher@op.pl"
         git config --global user.name "kacper.majcher"
         git add .
         git commit -m "Aktualizacja obrazu Docker w manifestach"
