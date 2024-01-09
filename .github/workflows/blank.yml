@@ -13,23 +13,25 @@ jobs:
       with:
         repository: username/Source-repo # Zaktualizuj na odpowiedni adres repozytorium Source repo
 
-    - name: Set up Qemu and Buildx
+    - name: Install Qemu, Buildx, and Docker login
       run: |
-        docker run --privileged --rm tonistiigi/binfmt --install all
+        sudo apt-get update -qy
+        sudo apt-get install -y --no-install-recommends qemu-user-static binfmt-support
+        docker build --platform=local -o . git://github.com/docker/buildx
+        mkdir -p ~/.docker/cli-plugins
+        mv buildx ~/.docker/cli-plugins/docker-buildx
         docker buildx create --use
-      shell: bash
 
-    - name: Login to DockerHub
+    - name: Docker login to DockerHub
       uses: docker/login-action@v1
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build and push Docker multi-architecture image
+    - name: Build and push Docker image
       uses: docker/build-push-action@v2
       with:
         context: .
-        platforms: linux/amd64,linux/arm64
         push: true
         tags: username/moja-aplikacja:latest
 
