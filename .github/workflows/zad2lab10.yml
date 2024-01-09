@@ -48,16 +48,13 @@ jobs:
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         
-    - name: Modify Kubernetes manifests
-      run: |
-        sed -i "s/image: user\/moja-aplikacja:.*/image: user\/moja-aplikacja:latest/g" deployment.yaml
         # Dodaj inne kroki modyfikacji manifestów w zależności od potrzeb
 
     - name: Commit and push changes
       run: |
         git config --global user.email "kacper.majcher@op.pl"
         git config --global user.name "kacper.majcher"
-        numer_wersji=$(sed -n 's/.*Numer Wersji Aplikacji: \([^<]*\).*/\1/p' plik.html)
+        numer_wersji=$(sed -n 's/.*Numer Wersji Aplikacji: \([^<]*\).*/\1/p' index.html)
         sed -i "s/image: thebert0s\/moja-aplikacja:.*/image: thebert0s\/moja-aplikacja:${numer_wersji}/g" deployment.yaml
         git add .
         git commit -m "Aktualizacja obrazu Docker w manifestach"
