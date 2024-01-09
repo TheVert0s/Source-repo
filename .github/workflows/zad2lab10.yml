@@ -59,4 +59,3 @@ jobs:
         git add .
         git commit -m "Aktualizacja obrazu Docker w manifestach"
         git push origin main # Zakładając, że używasz głównej gałęzi
-
