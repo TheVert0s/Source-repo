@@ -11,29 +11,27 @@ jobs:
     - name: Checkout Source repo
       uses: actions/checkout@v2
       with:
-        repository: TTheVert0s/Source-repo # Zaktualizuj na odpowiedni adres repozytorium Source repo
+        repository: user/Source-repo # Zaktualizuj na odpowiedni adres repozytorium Source repo
 
-    - name: Install Qemu, Buildx, and Docker login
+    - name: Set up Qemu and Buildx
       run: |
-        sudo apt-get update -qy
-        sudo apt-get install -y --no-install-recommends qemu-user-static binfmt-support
-        docker build --platform=local -o . git://github.com/docker/buildx
-        mkdir -p ~/.docker/cli-plugins
-        mv buildx ~/.docker/cli-plugins/docker-buildx
+        docker run --privileged --rm tonistiigi/binfmt --install all
         docker buildx create --use
+      shell: bash
 
-    - name: Docker login to DockerHub
+    - name: Login to DockerHub
       uses: docker/login-action@v1
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build and push Docker image
+    - name: Build and push Docker multi-architecture image
       uses: docker/build-push-action@v2
       with:
         context: .
+        platforms: linux/amd64,linux/arm64
         push: true
-        tags: username/moja-aplikacja:latest
+        tags: TheVert0s/moja-aplikacja:latest
 
   kubernetesCI:
     runs-on: ubuntu-latest
@@ -52,7 +50,7 @@ jobs:
         
     - name: Modify Kubernetes manifests
       run: |
-        sed -i "s/image: username\/moja-aplikacja:.*/image: username\/moja-aplikacja:latest/g" ./Config-repo/deployment.yaml
+        sed -i "s/image: user\/moja-aplikacja:.*/image: user\/moja-aplikacja:latest/g" ./Config-repo/deployment.yaml
         # Dodaj inne kroki modyfikacji manifestów w zależności od potrzeb
 
     - name: Commit and push changes
