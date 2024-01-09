@@ -11,7 +11,7 @@ jobs:
     - name: Checkout Source repo
       uses: actions/checkout@v2
       with:
-        repository: user/Source-repo # Zaktualizuj na odpowiedni adres repozytorium Source repo
+        repository: TheVert0s/Source-repo # Zaktualizuj na odpowiedni adres repozytorium Source repo
 
     - name: Set up Qemu and Buildx
       run: |
