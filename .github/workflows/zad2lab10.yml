@@ -57,6 +57,8 @@ jobs:
       run: |
         git config --global user.email "kacper.majcher@op.pl"
         git config --global user.name "kacper.majcher"
+        numer_wersji=$(sed -n 's/.*Numer Wersji Aplikacji: \([^<]*\).*/\1/p' plik.html)
+        sed -i "s/image: thebert0s\/moja-aplikacja:.*/image: thebert0s\/moja-aplikacja:${numer_wersji}/g" deployment.yaml
         git add .
         git commit -m "Aktualizacja obrazu Docker w manifestach"
         git push origin main # Zakładając, że używasz głównej gałęzi
