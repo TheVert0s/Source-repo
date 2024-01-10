@@ -5,7 +5,8 @@ on:
 jobs:
   dockerCI:
     runs-on: ubuntu-latest
-
+    outputs:
+      numer_wersji: ${{ steps.extract_version.outputs.numer_wersji }}
     steps:
     - name: Checkout Source repo
       uses: actions/checkout@v2
@@ -25,9 +26,10 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Extract version from index.html
+      id: extract_version
       run: |
         numer_wersji=$(sed -n 's/.*Numer Wersji Aplikacji: \([^<]*\).*/\1/p' index.html)
-        echo "NUMER_WERSJI=$numer_wersji" >> $GITHUB_ENV
+        echo "::set-output name=numer_wersji::$numer_wersji"
 
     - name: Build and push Docker multi-architecture image
       uses: docker/build-push-action@v2
@@ -60,7 +62,8 @@ jobs:
         git config --global user.email "kacper.majcher@op.pl"
         git config --global user.name "kacper.majcher"
        
-        sed -i "s/image: studentgit\/moja-aplikacja:.*/image: studentgit\/moja-aplikacja:${{ env.NUMER_WERSJI }}/g" deployment.yaml
+        echo "Numer wersji z dockerCI: ${{ needs.dockerCI.outputs.numer_wersji }}"
+        sed -i "s/image: studentgit\/moja-aplikacja:.*/image: studentgit\/moja-aplikacja:${{ needs.dockerCI.outputs.numer_wersji }}/g" deployment.yaml
     
         git add .
         git commit -m "Aktualizacja obrazu Docker w manifestach ${{ env.NUMER_WERSJI }}"
