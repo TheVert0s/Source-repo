@@ -67,5 +67,5 @@ jobs:
         sed -i "s/image: studentgit\/moja-aplikacja:.*/image: studentgit\/moja-aplikacja:${{ needs.dockerCI.outputs.numer_wersji }}/g" deployment.yaml
     
         git add .
-        git commit -m "Aktualizacja obrazu Docker w manifestach ${{ env.NUMER_WERSJI }}"
+        git commit -m "Aktualizacja obrazu Docker w manifestach ${{ needs.dockerCI.outputs.numer_wersji }}"
         git push origin main # Zakładając, że używasz głównej gałęzi
