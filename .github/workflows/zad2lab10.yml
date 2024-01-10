@@ -41,7 +41,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: TheVert0s/Config-repo # Zaktualizuj na odpowiedni adres repozytorium Config repo
-        ref: main # Zakładam, że główna gałąź to "main", dostosuj do swojej gałęzi
+        ref: main # Zakładam, że główna gałąź to "main", dostosuj do swojej gałęzi # git clone https://github.com/TheVert0s/Source-repo.git
         token: ${{ secrets.GIT_SECRET }}
 
     - name: Configure git
@@ -55,8 +55,8 @@ jobs:
       run: |
         git config --global user.email "kacper.majcher@op.pl"
         git config --global user.name "kacper.majcher"
-        git clone https://github.com/TheVert0s/Source-repo.git
-        numer_wersji=$(sed -n 's/.*Numer Wersji Aplikacji: \([^<]*\).*/\1/p' Source-repo/index.html)
+       
+        numer_wersji=$(sed -n 's/.*Numer Wersji Aplikacji: \([^<]*\).*/\1/p' index.html)
         sed -i "s/image: studentgit\/moja-aplikacja:.*/image: studentgit\/moja-aplikacja:${numer_wersji}/g" deployment.yaml
     
         git add .
