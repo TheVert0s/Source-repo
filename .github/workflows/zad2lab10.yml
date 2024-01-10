@@ -64,7 +64,7 @@ jobs:
         git config --global user.name "kacper.majcher"
        
         echo "Numer wersji z dockerCI: ${{ needs.dockerCI.outputs.numer_wersji }}"
-        sed -i "s/image: studentgit\/moja-aplikacja:.*/image: studentgit\/moja-aplikacja:${{ needs.dockerCI.outputs.numer_wersji }}/g" deployment.yaml
+        sed -i "s|image: studentgit/zad2gitops:latest|image: studentgit/zad2gitops:${{ needs.dockerCI.outputs.numer_wersji }}|g" deployment.yaml
     
         git add .
         git commit -m "Aktualizacja obrazu Docker w manifestach ${{ needs.dockerCI.outputs.numer_wersji }}"
