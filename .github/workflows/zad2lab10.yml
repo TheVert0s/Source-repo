@@ -42,6 +42,7 @@ jobs:
       with:
         repository: TheVert0s/Config-repo # Zaktualizuj na odpowiedni adres repozytorium Config repo
         ref: main # Zakładam, że główna gałąź to "main", dostosuj do swojej gałęzi
+        token: ${{ secrets.GIT_SECRET }}
 
     - name: Configure git
       run: |
