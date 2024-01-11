@@ -69,7 +69,7 @@ jobs:
         git config --global user.email "kacper.majcher@op.pl"
         git config --global user.name "kacper.majcher"
   
-        sed -i "s|image: studentgit/moja-aplikacja:v1.*|image: studentgit/moja-aplikacja::v1\.0\.${{ github.run_number }}|' deployment.yaml
+        sed -i "s|image: studentgit/moja-aplikacja:v1.*|image: studentgit/moja-aplikacja::v1\.0\.${{ github.run_number }}|" deployment.yaml
           git add deployment.yaml
           git add deployment.yaml
           git commit -m "Update image version v1.0.${{ github.run_number }}"
